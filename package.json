@@ -1,0 +1,18 @@
+{
+  "name": "propresenter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "arg": "^5.0.2",
+    "axios": "^0.27.2"
+  }
+}
