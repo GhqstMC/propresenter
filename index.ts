@@ -75,6 +75,8 @@ let activePresentation: ActivePresentation | null = null
 let presentationSlides: Slide[] = []
 let slideIndex: number = 0
 
+let first = false
+
 let lastSentCue: string[] = []
 
 const options1: http.RequestOptions = {
@@ -104,8 +106,9 @@ function arrayEquals<T>(a: T[], b: T[]) {
 function processSlideIndex(json: any) {
     slideIndex = json.presentation_index.index
     const label: string = presentationSlides[slideIndex].label
-    if (label.startsWith('Lights ')) {
-        let cues: string[] = label.substring(7).split(';')
+    const match = label.match(/Lights (\d+);(\d+)/)
+    if (match !== null) {
+        let cues = [match[1], match[2]]
         const [list, cue] = cues
         if (!arrayEquals(lastSentCue, cues)) {
             lastSentCue = cues
@@ -154,6 +157,10 @@ const establishRequest = () => {
         }
     
         res.on('data', (data: any) => {
+            if (!first) {
+                first = true
+                return
+            }
             const json: PresentationIndexResponse = JSON.parse(data)
             if (json.presentation_index == null) return
 
